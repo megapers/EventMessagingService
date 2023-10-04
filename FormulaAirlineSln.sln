@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormulaAirline", "FormulaAirline\FormulaAirline.csproj", "{224AA405-2B3E-429C-8CEC-C57D9757010A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceiverWebAPI", "ReceiverWebAPI\ReceiverWebAPI.csproj", "{AD58690C-9263-4B32-8DD8-44F5BB7D0CA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{224AA405-2B3E-429C-8CEC-C57D9757010A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{224AA405-2B3E-429C-8CEC-C57D9757010A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{224AA405-2B3E-429C-8CEC-C57D9757010A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{224AA405-2B3E-429C-8CEC-C57D9757010A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD58690C-9263-4B32-8DD8-44F5BB7D0CA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD58690C-9263-4B32-8DD8-44F5BB7D0CA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD58690C-9263-4B32-8DD8-44F5BB7D0CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD58690C-9263-4B32-8DD8-44F5BB7D0CA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
