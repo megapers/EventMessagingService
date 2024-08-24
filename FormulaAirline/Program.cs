@@ -12,6 +12,12 @@ builder.Services.AddSingleton<IMessageProducer, MessageProducer>();
 
 var app = builder.Build();
 
+// Dapr will send serialized event object vs. being raw CloudEvent
+app.UseCloudEvents();
+
+// needed for Dapr pub/sub routing
+app.MapSubscribeHandler();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -21,8 +27,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-List<Booking> _bookings = new();
-
 app.MapPost("api/v1/booking", (Booking newBooking, IMessageProducer producer) =>
 {
     if (newBooking == null)
@@ -30,12 +34,9 @@ app.MapPost("api/v1/booking", (Booking newBooking, IMessageProducer producer) =>
         throw new ArgumentNullException(nameof(newBooking));
     }
 
-    _bookings.Add(newBooking);
-
     try
     {
-        producer.PublichNewMessage(newBooking);
-        //producer.Dispose();
+        producer.PublishNewMessageAsync(newBooking);
     }
     catch (Exception ex)
     {

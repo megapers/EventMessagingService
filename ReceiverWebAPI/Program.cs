@@ -1,23 +1,40 @@
-using ReceiverWebAPI.AsyncDataServices;
+using System.Text.Json;
+using Dapr;
+using FormulaAirline.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddHostedService<MessageBusSubscriber>();
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseCloudEvents();
+app.MapSubscribeHandler();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
+// Dapr subscription in [Topic] routes bookings topic to this route
+app.MapPost("/bookings", [Topic("bookings_pubsub", "bookings")] (Booking booking) =>
+{
+    try
+    {
+        // Log the received booking object details
+        Console.WriteLine($"Subscriber received: Id={booking.Id}, PassengerName={booking.PassengerName}, PassportNb={booking.PassportNb}, From={booking.From}, To={booking.To}, Status={booking.Status}");
 
-app.Run();
+        return Results.Ok(booking);
+    }
+    catch (JsonException jsonEx)
+    {
+        // Handle JSON deserialization errors
+        Console.WriteLine($"JSON deserialization error: {jsonEx.Message}");
+        return Results.BadRequest("Invalid JSON format.");
+    }
+    catch (Exception ex)
+    {
+        // Handle any other errors
+        Console.WriteLine($"Unexpected error: {ex.Message}");
+        return Results.StatusCode(500);
+    }
+});
 
+await app.RunAsync();

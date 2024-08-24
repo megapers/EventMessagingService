@@ -7,7 +7,6 @@ namespace FormulaAirline.Services
 {
     public interface IMessageProducer
     {
-        public void PublichNewMessage<T>(T message);
-        public void Dispose();
+        public Task PublishNewMessageAsync<T>(T message);
     }
 }

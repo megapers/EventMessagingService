@@ -1,0 +1,11 @@
+version: 1
+common:
+  resourcesPath: ./Components
+apps:
+  - appID: ReceiverWebAPI
+    appDirPath: ./ReceiverWebAPI/
+    appPort: 7005
+    command: ["dotnet", "run"]
+  - appID: FormulaAirline
+    appDirPath: ./FormulaAirline/
+    command: ["dotnet", "run"]

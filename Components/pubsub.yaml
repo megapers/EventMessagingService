@@ -1,0 +1,43 @@
+# apiVersion: dapr.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: bookings_pubsub
+# spec:
+#   type: pubsub.redis
+#   version: v1
+#   metadata:
+#     - name: redisHost
+#       value: localhost:6379
+#     - name: redisPassword
+#       value: ""
+
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: bookings_pubsub
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+    - name: connectionString
+      value: "amqp://localhost:5672"
+    - name: durable
+      value: true
+    - name: deletedWhenUnused
+      value: false
+    - name: autoAck
+      value: false
+    - name: exchangeName
+      value: "bookings-exchange"
+    - name: exchangeKind
+      value: fanout
+    - name: routingKey
+      value: "bookings"
+    - name: queueName
+      value: "bookings-queue"
+    - name: prefetchCount
+      value: 50
+    - name: reconnectWait
+      value: 0
+    - name: concurrencyMode
+      value: single
