@@ -39,8 +39,8 @@ An alternative to running all or multiple applications at once is to run single 
 1. Run the Dotnet subscriber app with Dapr:
 
 ```bash
-cd ./order-processor
-dapr run --app-id ReceiverWebAPI --resources-path ../Components/ --app-port 7006 -- dotnet run
+cd ./ReceiverWebAPI
+dapr run --app-id ReceiverWebAPI --resources-path ../Components/ --app-port 7005 -- dotnet run
 ```
 
 ### Run Dotnet message publisher with Dapr
