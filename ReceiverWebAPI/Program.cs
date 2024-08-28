@@ -13,6 +13,8 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+//app.UseHttpsRedirection();
+
 // Dapr subscription in [Topic] routes bookings topic to this route
 app.MapPost("/bookings", [Topic("bookings_pubsub", "bookings")] (Booking booking) =>
 {

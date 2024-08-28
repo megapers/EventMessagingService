@@ -1,0 +1,87 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - dapr-network
+
+  formulaairline:
+    build:
+      context: .
+      dockerfile: FormulaAirline/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+      - placement
+    networks:
+      - dapr-network
+
+  formulaairline-dapr:
+    image: "daprio/daprd:edge"
+    command:
+      [
+        "./daprd",
+        "--app-id",
+        "FormulaAirline",
+        "--app-port",
+        "8080",
+        "--placement-host-address",
+        "placement:50006",
+        "--resources-path",
+        "./components",
+      ]
+    volumes:
+      - "./Components:/components"
+    depends_on:
+      - formulaairline
+    network_mode: "service:formulaairline"
+
+  receiverwebapi:
+    build:
+      context: .
+      dockerfile: ReceiverWebAPI/Dockerfile
+    ports:
+      - "7005:7005"
+    depends_on:
+      - rabbitmq
+      - placement
+    networks:
+      - dapr-network
+
+  receiverwebapi-dapr:
+    image: "daprio/daprd:edge"
+    command:
+      [
+        "./daprd",
+        "--app-id",
+        "ReceiverWebAPI",
+        "--app-port",
+        "7005",
+        "--placement-host-address",
+        "placement:50006",
+        "--resources-path",
+        "./components",
+      ]
+    volumes:
+      - "./Components:/components"
+    depends_on:
+      - receiverwebapi
+    network_mode: "service:receiverwebapi"
+
+  placement:
+    image: "daprio/dapr"
+    command: ["./placement", "--port", "50006"]
+    ports:
+      - "50006:50006"
+    networks:
+      - dapr-network
+
+networks:
+  dapr-network:
+    driver: bridge

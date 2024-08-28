@@ -4,6 +4,12 @@ In this quickstart, you'll create a publisher microservice and a subscriber micr
 
 Visit [this](https://docs.dapr.io/developing-applications/building-blocks/pubsub/) link for more information about Dapr and Pub-Sub.
 
+Pull Dapr images and start containers:
+
+```bash
+dapr init
+```
+
 > **Note:** This example leverages the Dapr client SDK. If you are looking for the example using only HTTP [click here](../http).
 
 This quickstart includes one publisher:
