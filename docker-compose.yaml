@@ -2,10 +2,16 @@ version: "3.8"
 
 services:
   rabbitmq:
+    container_name: "rabbitmq"
     image: rabbitmq:3-management-alpine
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      #RabbitMq instance
+      - 5672:5672
+      #Web interface
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/mnesia
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
       - dapr-network
 
@@ -23,7 +29,7 @@ services:
       - dapr-network
 
   formulaairline-dapr:
-    image: "daprio/daprd:edge"
+    image: "daprio/daprd:1.14.4"
     command:
       [
         "./daprd",
@@ -34,12 +40,14 @@ services:
         "--placement-host-address",
         "placement:50006",
         "--resources-path",
-        "./components",
+        "/Components",
       ]
     volumes:
-      - "./Components:/components"
+      - "./Components:/Components"
     depends_on:
       - formulaairline
+      - rabbitmq
+      - placement
     network_mode: "service:formulaairline"
 
   receiverwebapi:
@@ -55,7 +63,7 @@ services:
       - dapr-network
 
   receiverwebapi-dapr:
-    image: "daprio/daprd:edge"
+    image: "daprio/daprd:1.14.4"
     command:
       [
         "./daprd",
@@ -66,16 +74,18 @@ services:
         "--placement-host-address",
         "placement:50006",
         "--resources-path",
-        "./components",
+        "/Components",
       ]
     volumes:
-      - "./Components:/components"
+      - "./Components:/Components"
     depends_on:
       - receiverwebapi
+      - rabbitmq
+      - placement
     network_mode: "service:receiverwebapi"
 
   placement:
-    image: "daprio/dapr"
+    image: "daprio/dapr:1.14.4"
     command: ["./placement", "--port", "50006"]
     ports:
       - "50006:50006"

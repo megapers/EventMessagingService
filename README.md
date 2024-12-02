@@ -20,6 +20,22 @@ And one subscriber:
 
 - Dotnet subscriber `ReceiverWebAPI`
 
+## Run all apps in docker containers:
+
+Make sure you have docker engine installed.
+
+1. Open a new terminal window and run:
+
+```bash
+docker-compose up
+```
+
+2. Once done testing the application:
+
+```bash
+docker-compose down
+```
+
 ## Run all apps with multi-app run template file:
 
 This section shows how to run both applications at once using [multi-app run template files](https://docs.dapr.io/developing-applications/local-development/multi-app-dapr-run/multi-app-overview/) with `dapr run -f .`. This enables to you test the interactions between multiple applications.
